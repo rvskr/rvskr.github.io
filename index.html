@@ -72,7 +72,8 @@
                     visitBtn.classList.add('project-link', 'visit-btn');
                     visitBtn.textContent = 'Перейти на сайт';
                     visitBtn.addEventListener('click', function() {
-                        window.open(repo.homepage);
+                        const repoName = repo.name.toLowerCase();
+                        window.open(`https://voskreseniev.github.io/${repoName}`);
                     });
 
                     projectDiv.appendChild(projectName);
