@@ -7,9 +7,25 @@
 </head>
 <body>
     <h1>Список проектов</h1>
-    <ul>
-        <li><a href="https://voskreseniev.github.io/mesrch/">Проект 1</a></li>
-        <!-- Добавьте ссылки на другие проекты здесь -->
+    <ul id="projects-list">
+        <!-- Список проектов будет добавлен здесь динамически с помощью JavaScript -->
     </ul>
+
+    <script>
+        fetch('https://api.github.com/users/voskreseniev/repos')
+            .then(response => response.json())
+            .then(data => {
+                const projectsList = document.getElementById('projects-list');
+                data.forEach(repo => {
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = repo.html_url;
+                    link.textContent = repo.name;
+                    listItem.appendChild(link);
+                    projectsList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Ошибка получения данных:', error));
+    </script>
 </body>
 </html>
