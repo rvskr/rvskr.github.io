@@ -2,14 +2,39 @@ document.addEventListener("DOMContentLoaded", function() {
     const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
     themeToggleCheckbox.addEventListener('change', toggleDarkMode);
     loadTheme();
-    loadProjects();
+    openTab('projects'); // Открываем вкладку проектов по умолчанию
 });
 
-function loadProjects() {
-    const username = document.getElementById('username').value;
+function openTab(tabName) {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
 
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(content => {
+        content.style.display = 'none';
+    });
+
+    const selectedTab = document.getElementById(tabName);
+    selectedTab.style.display = 'block';
+
+    const selectedTabButton = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    selectedTabButton.classList.add('active');
+
+    if (tabName === 'projects') {
+        loadProjects('rvskr'); // Загружаем проекты пользователя rvskr при открытии вкладки "Проекты"
+    }
+}
+
+function loadProjects(username) {
     fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Произошла ошибка при загрузке проектов. Пожалуйста, проверьте имя пользователя и повторите попытку.');
+            }
+            return response.json();
+        })
         .then(data => {
             const projectsList = document.getElementById('projects-list');
             projectsList.innerHTML = '';
@@ -50,7 +75,7 @@ function loadProjects() {
         })
         .catch(error => {
             const projectsList = document.getElementById('projects-list');
-            projectsList.innerHTML = '<p>Произошла ошибка при загрузке проектов.</p>';
+            projectsList.innerHTML = `<p>${error.message}</p>`;
             console.error('Ошибка получения данных:', error);
         });
 }
