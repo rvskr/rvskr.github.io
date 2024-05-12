@@ -46,7 +46,7 @@
     </div>
 
     <script>
-        fetch('https://api.github.com/users/voskreseniev/repos')
+        fetch('https://api.github.com/users/rvskr/repos')
             .then(response => response.json())
             .then(data => {
                 const projectsList = document.getElementById('projects-list');
@@ -72,7 +72,7 @@
                     visitBtn.classList.add('project-link', 'visit-btn');
                     visitBtn.textContent = 'Перейти на сайт';
                     visitBtn.addEventListener('click', function() {
-                        window.open(`https://voskreseniev.github.io/${repo.name}`);
+                        window.open(`https://rvskr.github.io/${repo.name}`);
                     });
 
                     projectDiv.appendChild(projectName);
