@@ -43,6 +43,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-right: 10px;
         }
         button:hover {
             background-color: #0056b3;
@@ -91,11 +92,9 @@
         .visit-btn:hover {
             background-color: #218838;
         }
-
-        @media screen and (max-width: 768px) {
-            .project {
-                width: calc(100% - 20px);
-            }
+        .disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -142,17 +141,19 @@
                         repoLink.target = "_blank";
                         repoLink.textContent = 'Репозиторий';
 
-                        const visitBtn = document.createElement('button');
-                        visitBtn.classList.add('visit-btn');
-                        visitBtn.textContent = 'Перейти на сайт';
-                        visitBtn.addEventListener('click', function() {
-                            window.open(`https://${username}.github.io/${repo.name}`);
-                        });
-
                         projectDiv.appendChild(projectName);
                         projectDiv.appendChild(projectDescription);
                         projectDiv.appendChild(repoLink);
-                        projectDiv.appendChild(visitBtn);
+
+                        if (repo.has_pages) {
+                            const visitBtn = document.createElement('button');
+                            visitBtn.classList.add('visit-btn');
+                            visitBtn.textContent = 'Перейти на сайт';
+                            visitBtn.addEventListener('click', function() {
+                                window.open(`https://${username}.github.io/${repo.name}`);
+                            });
+                            projectDiv.appendChild(visitBtn);
+                        }
 
                         projectsList.appendChild(projectDiv);
                     });
