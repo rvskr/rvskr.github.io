@@ -21,6 +21,7 @@
                     const link = document.createElement('a');
                     link.href = repo.html_url;
                     link.textContent = repo.name;
+                    link.target = "_blank"; // Открывать ссылку в новой вкладке
                     listItem.appendChild(link);
                     projectsList.appendChild(listItem);
                 });
