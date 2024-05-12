@@ -7,83 +7,162 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 18px;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 8px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .projects-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .project {
-            margin-bottom: 20px;
+            width: calc(50% - 20px);
+            margin: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .project-name {
             font-size: 18px;
             font-weight: bold;
+            margin-bottom: 10px;
         }
         .project-description {
-            margin-top: 5px;
+            font-size: 16px;
+            color: #6c757d;
             margin-bottom: 10px;
         }
         .project-link {
-            display: inline-block;
-            margin-right: 10px;
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: #fff;
+            display: block;
+            margin-bottom: 10px;
+            color: #007bff;
             text-decoration: none;
-            border-radius: 5px;
         }
         .project-link:hover {
-            background-color: #0056b3;
+            text-decoration: underline;
         }
         .visit-btn {
+            padding: 8px 20px;
+            font-size: 16px;
             background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         .visit-btn:hover {
             background-color: #218838;
         }
+
+        @media screen and (max-width: 768px) {
+            .project {
+                width: calc(100% - 20px);
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Список проектов</h1>
-    <div id="projects-list">
-        <!-- Список проектов будет добавлен здесь динамически с помощью JavaScript -->
+    <div class="container">
+        <h1>Список проектов</h1>
+        <div class="form-container">
+            <label for="username">Введите имя пользователя GitHub:</label>
+            <input type="text" id="username" name="username" value="rvskr">
+            <button onclick="loadProjects()">Показать проекты</button>
+        </div>
+        <div class="projects-list" id="projects-list">
+            <!-- Список проектов будет добавлен здесь динамически с помощью JavaScript -->
+        </div>
     </div>
 
     <script>
-        fetch('https://api.github.com/users/rvskr/repos')
-            .then(response => response.json())
-            .then(data => {
-                const projectsList = document.getElementById('projects-list');
-                data.forEach(repo => {
-                    const projectDiv = document.createElement('div');
-                    projectDiv.classList.add('project');
+        document.addEventListener("DOMContentLoaded", function() {
+            loadProjects();
+        });
 
-                    const projectName = document.createElement('div');
-                    projectName.classList.add('project-name');
-                    projectName.textContent = repo.name;
+        function loadProjects() {
+            const username = document.getElementById('username').value;
+            fetch(`https://api.github.com/users/${username}/repos`)
+                .then(response => response.json())
+                .then(data => {
+                    const projectsList = document.getElementById('projects-list');
+                    projectsList.innerHTML = '';
+                    data.forEach(repo => {
+                        const projectDiv = document.createElement('div');
+                        projectDiv.classList.add('project');
 
-                    const projectDescription = document.createElement('div');
-                    projectDescription.classList.add('project-description');
-                    projectDescription.textContent = repo.description || 'Описание отсутствует';
+                        const projectName = document.createElement('div');
+                        projectName.classList.add('project-name');
+                        projectName.textContent = repo.name;
 
-                    const repoLink = document.createElement('a');
-                    repoLink.classList.add('project-link');
-                    repoLink.href = repo.html_url;
-                    repoLink.target = "_blank";
-                    repoLink.textContent = 'Репозиторий';
+                        const projectDescription = document.createElement('div');
+                        projectDescription.classList.add('project-description');
+                        projectDescription.textContent = repo.description || 'Описание отсутствует';
 
-                    const visitBtn = document.createElement('button');
-                    visitBtn.classList.add('project-link', 'visit-btn');
-                    visitBtn.textContent = 'Перейти на сайт';
-                    visitBtn.addEventListener('click', function() {
-                        window.open(`https://rvskr.github.io/${repo.name}`);
+                        const repoLink = document.createElement('a');
+                        repoLink.classList.add('project-link');
+                        repoLink.href = repo.html_url;
+                        repoLink.target = "_blank";
+                        repoLink.textContent = 'Репозиторий';
+
+                        const visitBtn = document.createElement('button');
+                        visitBtn.classList.add('visit-btn');
+                        visitBtn.textContent = 'Перейти на сайт';
+                        visitBtn.addEventListener('click', function() {
+                            window.open(`https://${username}.github.io/${repo.name}`);
+                        });
+
+                        projectDiv.appendChild(projectName);
+                        projectDiv.appendChild(projectDescription);
+                        projectDiv.appendChild(repoLink);
+                        projectDiv.appendChild(visitBtn);
+
+                        projectsList.appendChild(projectDiv);
                     });
-
-                    projectDiv.appendChild(projectName);
-                    projectDiv.appendChild(projectDescription);
-                    projectDiv.appendChild(repoLink);
-                    projectDiv.appendChild(visitBtn);
-
-                    projectsList.appendChild(projectDiv);
+                })
+                .catch(error => {
+                    const projectsList = document.getElementById('projects-list');
+                    projectsList.innerHTML = '<p>Произошла ошибка при загрузке проектов.</p>';
+                    console.error('Ошибка получения данных:', error);
                 });
-            })
-            .catch(error => console.error('Ошибка получения данных:', error));
+        }
     </script>
 </body>
 </html>
