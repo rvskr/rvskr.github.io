@@ -5,6 +5,7 @@ body {
     background-color: #f8f9fa;
     color: #212529;
     transition: background-color 0.3s, color 0.3s;
+    
 }
 
 .container {
@@ -259,3 +260,25 @@ button:hover {
 .dark-mode .visit-btn:hover {
     background-color: #218838;
 }
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tab-content {
+    display: none;
+    
+}
+
+.contact-buttons img {
+    width: 25%;
+    height: auto;
+    padding-bottom: 5%;
+    padding-left: 30%;
+}
+
+ul, li {
+    /* Маркеры-точки, прощайте. Мы больше не увидим вас здесь */
+    list-style: none;
+  }
