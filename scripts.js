@@ -23,11 +23,14 @@ function openTab(tabName) {
     selectedTabButton.classList.add('active');
 
     if (tabName === 'projects') {
-        loadProjects('rvskr'); // Загружаем проекты пользователя rvskr при открытии вкладки "Проекты"
+        loadProjects(); // Загружаем проекты при открытии вкладки "Проекты"
     }
 }
 
-function loadProjects(username) {
+function loadProjects() {
+    const username = document.getElementById('username').value;
+    console.log(`Загружаем проекты для пользователя: ${username}`);
+
     fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
         .then(response => {
             if (!response.ok) {
@@ -36,8 +39,10 @@ function loadProjects(username) {
             return response.json();
         })
         .then(data => {
+            console.log('Полученные данные:', data);
             const projectsList = document.getElementById('projects-list');
             projectsList.innerHTML = '';
+
             data.forEach(repo => {
                 const projectDiv = document.createElement('div');
                 projectDiv.classList.add('project');
