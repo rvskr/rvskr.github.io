@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
     themeToggleCheckbox.addEventListener('change', toggleDarkMode);
-    loadTheme();
+    loadDarkTheme(); // Загружаем темную тему при загрузке страницы
     openTab('projects'); // Открываем вкладку проектов по умолчанию
 });
 
@@ -89,9 +89,7 @@ function openTab(tabName) {
     selectedTabButton.classList.add('active');
 
     if (tabName === 'projects') {
-        const username = document.getElementById('username').value;
-        const projectLoader = new ProjectLoader(username);
-        projectLoader.loadProjects(); // Загружаем проекты при открытии вкладки "Проекты"
+        loadProjects(); // Загружаем проекты при открытии вкладки "Проекты"
     }
 }
 
@@ -104,20 +102,29 @@ function loadProjects() {
 function toggleDarkMode() {
     const body = document.body;
     const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
+    
     body.classList.toggle('dark-mode');
-    saveTheme(themeToggleCheckbox.checked);
+    saveTheme(themeToggleCheckbox.checked); // Сохраняем текущее состояние чекбокса
 }
 
 function saveTheme(isDarkMode) {
-    localStorage.setItem('darkMode', isDarkMode);
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode)); // Сохраняем состояние чекбокса в localStorage
 }
 
-function loadTheme() {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+function loadDarkTheme() {
     const body = document.body;
     const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
-    if (isDarkMode) {
-        body.classList.add('dark-mode');
-        themeToggleCheckbox.checked = true;
+    
+    // Загружаем состояние чекбокса из localStorage, если оно там сохранено
+    const isDarkMode = JSON.parse(localStorage.getItem('darkMode'));
+    
+    // При первом посещении сайта устанавливаем темную тему и чекбокс включенным
+    if (isDarkMode === true || isDarkMode === null) {
+        body.classList.add('dark-mode'); // Добавляем класс темной темы, если чекбокс был выбран или localStorage пуст
+        themeToggleCheckbox.checked = true; // Устанавливаем чекбокс "Тёмная тема" как выбранный
+        saveTheme(true); // Сохраняем в localStorage состояние чекбокса
+    } else {
+        body.classList.remove('dark-mode'); // Убираем класс темной темы, если чекбокс не был выбран
+        themeToggleCheckbox.checked = false; // Устанавливаем чекбокс "Тёмная тема" как не выбранный
     }
 }
