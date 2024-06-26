@@ -16,7 +16,7 @@
         </div>
         <div class="tabs">
             <div class="tab" data-tab="projects" onclick="openTab('projects')">Проекты</div>
-            <div class="tab" data-tab="tab2" onclick="openTab('tab2')">Вкладка 2</div>
+            <div class="tab" data-tab="tab2" onclick="openTab('tab2')">Запрос на разработку</div>
             <div class="tab" data-tab="contacts" onclick="openTab('contacts')">Контакты</div>
         </div>
         <div id="projects" class="tab-content">
@@ -30,8 +30,23 @@
             </div>
         </div>
         <div id="tab2" class="tab-content" style="display: none;">
-            Содержимое вкладки 2
+            <section id="contact">
+                <h2>Опишите что бы вы хотели и оставьте ваши данные</h2>
+                <div class="contact-form" data-aos="fade-up">
+                    <form id="contactForm">
+                        <label for="name">Имя:</label>
+                        <input type="text" id="name" name="entry.2099680010" required>
+                        <label for="text">Telegram:</label>
+                        <input type="text" id="email" name="entry.1582618556" required>
+                        <label for="message">Сообщение:</label>
+                        <textarea id="message" name="entry.9658606" required></textarea>
+                        <button type="submit" class="btn">Отправить</button>
+                    </form>
+                    <div id="formResponse" style="display: none; color: green; margin-top: 20px;">Спасибо! Ваше сообщение отправлено.</div>
+                </div>
+            </section>
         </div>
+        
         <div id="contacts" class="tab-content" style="display: none;">
             <h2>Контакты</h2>
             <p>Вы можете связаться со мной через следующие платформы:</p>
