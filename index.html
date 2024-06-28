@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список проектов</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode.css" id="dark-mode-stylesheet" disabled>
     <link rel="shortcut icon" href="favicon.png" type="image/png">
 </head>
 <body>
@@ -21,10 +22,10 @@
         </div>
         <div id="projects" class="tab-content">
             <div class="form-container">
-                <label>Введите имя пользователя<a href="https://github.com/" target="_blank"> GitHub </a>:</label>
+                <label>Введите имя пользователя<a href="https://github.com/" target="_blank" class="github-link"> GitHub </a>:</label>
                 <input type="text" id="username" name="username" value="rvskr">
                 <button onclick="loadProjects()">Показать проекты</button>
-            </div>
+            </div>            
             <div class="projects-list" id="projects-list">
                 <!-- Список проектов будет добавлен здесь динамически с помощью JavaScript -->
             </div>

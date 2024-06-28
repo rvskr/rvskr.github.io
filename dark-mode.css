@@ -1,0 +1,98 @@
+.dark-mode {
+    background-color: #212529;
+    color: #fff;
+}
+
+.dark-mode .container {
+    background-color: #343a40;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode h1 {
+    color: #fff;
+}
+
+.dark-mode .form-container {
+    color: #fff;
+}
+
+.dark-mode label {
+    color: #fff;
+}
+
+.dark-mode input[type="text"] {
+    background-color: #343a40;
+    color: #fff;
+    border: 1px solid #495057;
+}
+
+.dark-mode input[type="text"]:focus {
+    border-color: #007bff;
+}
+
+.dark-mode button {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.dark-mode button:hover {
+    background-color: #0056b3;
+}
+
+.dark-mode .theme-toggle-label {
+    color: #fff;
+}
+
+.dark-mode .tab {
+    background-color: #495057;
+    color: #fff;
+}
+
+.dark-mode .tab:hover {
+    background-color: #343a40;
+}
+
+.dark-mode .tab.active {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.dark-mode .tab-content {
+    background-color: #495057;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .projects-list {
+    background-color: #343a40;
+}
+
+.dark-mode .project {
+    background-color: #495057;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .project-name {
+    color: #fff;
+}
+
+.dark-mode .project-description {
+    color: #adb5bd;
+}
+
+.dark-mode .project-link {
+    color: #007bff;
+}
+
+.dark-mode .project-link:hover {
+    text-decoration: underline;
+}
+
+.dark-mode .visit-btn {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.dark-mode .visit-btn:hover {
+    background-color: #218838;
+}

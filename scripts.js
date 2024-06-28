@@ -105,6 +105,7 @@ function toggleDarkMode() {
     
     body.classList.toggle('dark-mode');
     saveTheme(themeToggleCheckbox.checked); // Сохраняем текущее состояние чекбокса
+    loadDarkThemeStyles(themeToggleCheckbox.checked);
 }
 
 function saveTheme(isDarkMode) {
@@ -127,13 +128,23 @@ function loadDarkTheme() {
         body.classList.remove('dark-mode'); // Убираем класс темной темы, если чекбокс не был выбран
         themeToggleCheckbox.checked = false; // Устанавливаем чекбокс "Тёмная тема" как не выбранный
     }
+
+    loadDarkThemeStyles(isDarkMode);
 }
 
+function loadDarkThemeStyles(isDarkMode) {
+    const darkModeStyles = document.getElementById('dark-mode-styles');
 
-
-
-
-
+    if (isDarkMode && !darkModeStyles) {
+        const link = document.createElement('link');
+        link.id = 'dark-mode-styles';
+        link.rel = 'stylesheet';
+        link.href = 'dark-mode.css';
+        document.head.appendChild(link);
+    } else if (!isDarkMode && darkModeStyles) {
+        document.head.removeChild(darkModeStyles);
+    }
+}
 
 // Функция для отправки данных формы в Google Форму
 function submitGoogleForm(name, email, message) {
