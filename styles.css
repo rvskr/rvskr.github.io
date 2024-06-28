@@ -5,15 +5,14 @@ body {
     background-color: #f8f9fa;
     color: #212529;
     transition: background-color 0.3s, color 0.3s;
-    
 }
 
 .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 0 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    border-radius: 0;
+    box-shadow: none;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
@@ -32,7 +31,7 @@ label {
 }
 
 input[type="text"] {
-    width: 200px;
+    width: calc(20% - 20px);
     padding: 8px;
     font-size: 16px;
     margin-right: 10px;
@@ -260,16 +259,6 @@ button:hover {
 .dark-mode .visit-btn:hover {
     background-color: #218838;
 }
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.tab-content {
-    display: none;
-    
-}
 
 .contact-buttons img {
     width: 25%;
@@ -279,14 +268,13 @@ button:hover {
 }
 
 ul, li {
-    /* Маркеры-точки, прощайте. Мы больше не увидим вас здесь */
     list-style: none;
-  }
+}
 
-  #tab2 form {
-    max-width: 500px; /* Максимальная ширина формы */
-    margin: 0 auto; /* Центрирование формы */
-    text-align: center; /* Выравнивание текста по центру */
+#tab2 form {
+    width: 30%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 #tab2 label {
@@ -297,8 +285,7 @@ ul, li {
 
 #tab2 input[type="text"],
 #tab2 textarea {
-    width: calc(100% - 16px); /* Ширина с учётом внутренних отступов */
-    max-width: 100%; /* Максимальная ширина */
+    width: calc(100% - 32px);
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -307,11 +294,10 @@ ul, li {
 }
 
 #tab2 textarea {
-    height: 100px; /* Минимальная высота поля ввода сообщения */
-    min-height: 100px; /* Гарантирует минимальную высоту, если текст короче */
-    resize: vertical; /* Разрешить изменение размера по вертикали */
+    height: 100px;
+    min-height: 100px;
+    resize: vertical;
 }
-
 
 #tab2 .btn {
     background-color: #007bff;
@@ -326,4 +312,7 @@ ul, li {
 
 #tab2 .btn:hover {
     background-color: #0056b3;
+}
+#contact h2 {
+    text-align: center;
 }
