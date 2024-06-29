@@ -22,8 +22,8 @@
         </div>
         <div id="projects" class="tab-content">
             <div class="form-container">
-                <label>Введите имя пользователя<a href="https://github.com/" target="_blank" class="github-link"> GitHub </a>:</label>
-                <input type="text" id="username" name="username" value="rvskr">
+                <label>Введите имя пользователя <a href="https://github.com/" target="_blank" rel="noopener" class="github-link">GitHub</a></label>
+                <input type="text" id="username" name="username" value="rvskr" title="Введите имя пользователя">
                 <button onclick="loadProjects()">Показать проекты</button>
             </div>            
             <div class="projects-list" id="projects-list">
@@ -37,22 +37,22 @@
                     <form id="contactForm">
                         <div id="formResponse" style="display: none; color: green; margin-top: 20px;">Спасибо! Ваше сообщение отправлено.</div>
                         <label for="name">Имя:</label>
-                        <input type="text" id="name" name="entry.2099680010" required>
-                        <label for="text">Telegram либо Email:</label>
-                        <input type="text" id="email" name="entry.1582618556" required>
+                        <input type="text" id="name" name="entry.2099680010" required title="Введите ваше имя">
+                        <label for="email">Telegram или Email:</label>
+                        <input type="text" id="email" name="entry.1582618556" required title="Введите ваш Telegram или Email">
                         <label for="message">Сообщение:</label>
-                        <textarea id="message" name="entry.9658606" required></textarea>
+                        <textarea id="message" name="entry.9658606" required title="Введите ваше сообщение"></textarea>
                         <button type="submit" class="btn">Отправить</button>
                     </form>
                 </div>
             </section>
         </div>
         
-        <div id="contacts" class="tab-content" >
+        <div id="contacts" class="tab-content">
             <h2 class="contact-title">Контакты</h2>
             <ul class="contact-buttons">
-                <li><a href="https://t.me/r_vskr" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" alt="Telegram"></a></li>
-                <li><a href="https://discordapp.com/users/roman_voskresennev" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/b/b7/Discord_logo_svg.svg/2560px-Discord_logo_svg.svg.png" alt="Discord"></a></li>
+                <li><a href="https://t.me/r_vskr" target="_blank" rel="noopener"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" alt="Telegram"></a></li>
+                <li><a href="https://discordapp.com/users/roman_voskresennev" target="_blank" rel="noopener"><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/b/b7/Discord_logo_svg.svg/2560px-Discord_logo_svg.svg.png" alt="Discord"></a></li>
             </ul>
         </div>
     </div>
