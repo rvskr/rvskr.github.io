@@ -8,6 +8,10 @@ body {
     overflow-x: hidden;
 }
 
+.project-created-date,.project-last-updated{
+    margin-bottom: 5px;
+}
+
 .github-link {
     color: #0366d6; /* Фирменный цвет GitHub */
     background-color: #f6f8fa; /* Фон GitHub */

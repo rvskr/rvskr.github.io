@@ -1,3 +1,4 @@
+loadDarkTheme();
 document.addEventListener("DOMContentLoaded", function() {
     const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
     themeToggleCheckbox.addEventListener('change', toggleDarkMode);
@@ -28,34 +29,39 @@ class ProjectLoader {
 
     displayProjects(repos) {
         this.projectsList.innerHTML = '';
-        repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // Сортируем по дате создания
         repos.forEach(repo => {
             const projectDiv = document.createElement('div');
             projectDiv.classList.add('project');
-
+    
             const projectName = document.createElement('div');
             projectName.classList.add('project-name');
             projectName.textContent = repo.name;
-
+    
             const projectDescription = document.createElement('div');
             projectDescription.classList.add('project-description');
             projectDescription.textContent = repo.description || 'Описание отсутствует';
-
+    
             const repoLink = document.createElement('a');
             repoLink.classList.add('project-link');
             repoLink.href = repo.html_url;
             repoLink.target = "_blank";
             repoLink.textContent = 'Репозиторий';
-
+    
+            const createdDate = document.createElement('div');
+            createdDate.classList.add('project-created-date');
+            createdDate.textContent = `Дата создания: ${new Date(repo.created_at).toLocaleDateString()}`;
+    
             const lastUpdated = document.createElement('div');
             lastUpdated.classList.add('project-last-updated');
             lastUpdated.textContent = `Последнее обновление: ${new Date(repo.updated_at).toLocaleDateString()}`;
-
+    
             projectDiv.appendChild(projectName);
+            projectDiv.appendChild(createdDate);    
             projectDiv.appendChild(projectDescription);
             projectDiv.appendChild(repoLink);
             projectDiv.appendChild(lastUpdated);
-
+    
             if (repo.has_pages) {
                 const visitBtn = document.createElement('button');
                 visitBtn.classList.add('visit-btn');
@@ -65,10 +71,11 @@ class ProjectLoader {
                 });
                 projectDiv.appendChild(visitBtn);
             }
-
+    
             this.projectsList.appendChild(projectDiv);
         });
     }
+    
 }
 
 function openTab(tabName) {
@@ -121,12 +128,12 @@ function loadDarkTheme() {
     
     // При первом посещении сайта устанавливаем темную тему и чекбокс включенным
     if (isDarkMode === true || isDarkMode === null) {
-        body.classList.add('dark-mode'); // Добавляем класс темной темы, если чекбокс был выбран или localStorage пуст
-        themeToggleCheckbox.checked = true; // Устанавливаем чекбокс "Тёмная тема" как выбранный
-        saveTheme(true); // Сохраняем в localStorage состояние чекбокса
+        body.classList.add('dark-mode'); 
+        themeToggleCheckbox.checked = true; 
+        saveTheme(true); 
     } else {
-        body.classList.remove('dark-mode'); // Убираем класс темной темы, если чекбокс не был выбран
-        themeToggleCheckbox.checked = false; // Устанавливаем чекбокс "Тёмная тема" как не выбранный
+        body.classList.remove('dark-mode'); 
+        themeToggleCheckbox.checked = false; 
     }
 
     loadDarkThemeStyles(isDarkMode);
@@ -171,9 +178,9 @@ function submitGoogleForm(name, email, message) {
 }
 
 // Пример использования:
-const nameInput = document.getElementById('name');       // Получение поля "Имя:"
-const emailInput = document.getElementById('email');     // Получение поля "Email:"
-const messageInput = document.getElementById('message'); // Получение поля "Сообщение:"
+const nameInput = document.getElementById('name');      
+const emailInput = document.getElementById('email');     
+const messageInput = document.getElementById('message'); 
 
 // Обработчик события отправки формы
 document.querySelector('form').addEventListener('submit', function(event) {
