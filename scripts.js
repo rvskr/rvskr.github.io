@@ -33,48 +33,58 @@ class ProjectLoader {
         repos.forEach(repo => {
             const projectDiv = document.createElement('div');
             projectDiv.classList.add('project');
-    
+        
             const projectName = document.createElement('div');
             projectName.classList.add('project-name');
             projectName.textContent = repo.name;
-    
+        
             const projectDescription = document.createElement('div');
             projectDescription.classList.add('project-description');
             projectDescription.textContent = repo.description || 'Описание отсутствует';
-    
+        
             const repoLink = document.createElement('a');
             repoLink.classList.add('project-link');
             repoLink.href = repo.html_url;
             repoLink.target = "_blank";
             repoLink.textContent = 'Репозиторий';
-    
+        
             const createdDate = document.createElement('div');
             createdDate.classList.add('project-created-date');
             createdDate.textContent = `Дата создания: ${new Date(repo.created_at).toLocaleDateString()}`;
-    
+        
             const lastUpdated = document.createElement('div');
             lastUpdated.classList.add('project-last-updated');
             lastUpdated.textContent = `Последнее обновление: ${new Date(repo.updated_at).toLocaleDateString()}`;
-    
+        
             projectDiv.appendChild(projectName);
             projectDiv.appendChild(createdDate);    
             projectDiv.appendChild(projectDescription);
             projectDiv.appendChild(repoLink);
             projectDiv.appendChild(lastUpdated);
-    
-            if (repo.has_pages) {
+        
+            // Проверка, есть ли ссылка в разделе "About" или на GitHub Pages
+            let websiteLink = repo.homepage || (repo.has_pages ? `https://${this.username}.github.io/${repo.name}` : null);
+        
+            if (websiteLink) {
                 const visitBtn = document.createElement('button');
                 visitBtn.classList.add('visit-btn');
                 visitBtn.textContent = 'Перейти на сайт';
                 visitBtn.addEventListener('click', () => {
-                    window.open(`https://${this.username}.github.io/${repo.name}`);
+                    window.open(websiteLink); // Открываем ссылку на сайт
                 });
                 projectDiv.appendChild(visitBtn);
+            } else {
+                // Если сайта нет, можно скрыть кнопку или добавить текст
+                const noWebsiteText = document.createElement('div');
+                noWebsiteText.classList.add('no-website');
+
+                projectDiv.appendChild(noWebsiteText);
             }
-    
+        
             this.projectsList.appendChild(projectDiv);
         });
     }
+    
     
 }
 
