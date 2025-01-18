@@ -8,9 +8,14 @@ const ContactForm = ({ t, handleSubmit }) => {
   const [modalMessage, setModalMessage] = useState('');
 
   const sendMessageToTelegram = async (formData) => {
-    const token = '6812172443:AAHykExeTjTP8z8Jj5NZ5suSkf0WTGsfmoE';  // Замените на токен вашего бота
-    const chatId = '558625598';  // Замените на ваш chat ID
+    const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;  // Используем переменную окружения для токена
+    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;  // Используем переменную окружения для chat ID
     
+    if (!token || !chatId) {
+      console.error('Telegram bot token or chat ID is missing');
+      return;
+    }
+
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
     const message = `New message from ${formData.name} (${formData.email}):\n${formData.message}`;
 

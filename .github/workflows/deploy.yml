@@ -1,0 +1,47 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - deploy 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout кода из репозитория
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Установим Node.js и npm
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      # Установим зависимости
+      - name: Install dependencies
+        run: npm install
+
+      # Собираем проект с помощью Vite
+      - name: Build project
+        run: npm run build
+
+      # Деплой на GitHub Pages с помощью peaceiris/actions-gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Используем GitHub Token для доступа
+          publish_dir: ./dist  # Папка, которая будет опубликована на GitHub Pages
+
+      # Если необходимо, используем Telegram API для уведомлений (например, отправка сообщения о деплое)
+      - name: Send Telegram message
+        if: success()  # Отправить сообщение только при успешном деплое
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}/sendMessage" \
+          -d chat_id=${{ secrets.VITE_TELEGRAM_CHAT_ID }} \
+          -d text="Deployment completed successfully!"
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
