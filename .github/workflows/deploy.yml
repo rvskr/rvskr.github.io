@@ -3,11 +3,15 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # замените на вашу основную ветку
+      - main  # основная ветка
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:  # Переменные окружения для всего рабочего процесса
+      VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
+      VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
 
     steps:
       - name: Check out code
@@ -19,38 +23,13 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: |
-          echo "Installing dependencies..."
-          npm install
-
-      - name: Show environment variables
-        run: |
-          echo "VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}"
-          echo "VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}"
+        run: npm install
 
       - name: Build project
-        run: |
-          echo "Building the project..."
-          npm run build
-        env:
-          VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
-          VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
-
-      - name: Log build output
-        run: |
-          echo "Build folder contents:"
-          ls -alh dist/
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
-          VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
-
-      - name: Deployment completed
-        run: |
-          echo "Deployment completed successfully!"
