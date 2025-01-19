@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - deploy
+      - deploy  # или мастер, если ваша основная ветка называется так
 
 jobs:
   deploy:
@@ -40,4 +40,4 @@ jobs:
         with:
           branch: gh-pages  # ветка, на которую будет отправляться билд
           folder: dist      # папка с итоговыми файлами сборки
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}  # или ваш персональный токен
