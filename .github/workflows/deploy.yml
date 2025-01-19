@@ -6,44 +6,38 @@ on:
       - deploy
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Проверяем код из репозитория
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # Шаг 1: Проверка репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # 2. Устанавливаем Node.js
+      # Шаг 2: Настройка Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '16'  # используйте актуальную версию Node.js
 
-      # 3. Устанавливаем зависимости
+      # Шаг 3: Установка зависимостей
       - name: Install dependencies
         run: npm install
 
-      # 4. Собираем проект
-      - name: Build project
+      # Шаг 4: Создание файла .env
+      - name: Create .env file
+        run: |
+          echo "VITE_TELEGRAM_BOT_TOKEN=${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}" >> .env
+          echo "VITE_TELEGRAM_CHAT_ID=${{ secrets.VITE_TELEGRAM_CHAT_ID }}" >> .env
+
+      # Шаг 5: Сборка проекта
+      - name: Build
         run: npm run build
 
-      # 5. Публикуем на GitHub Pages
+      # Шаг 6: Деплой на GitHub Pages
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GH_TOKEN }}  # Используем персональный токен для аутентификации
-          publish_dir: ./dist  # Путь к директории, которая будет опубликована на GitHub Pages
-          user_name: 'github-actions'  # Имя пользователя
-          user_email: 'github-actions@github.com'  # Электронная почта
-
-      # 6. Отправка уведомления в Telegram (по желанию)
-      - name: Send Telegram message
-        if: success()  # Отправляем сообщение только при успешном деплое
-        run: |
-          curl -X POST "https://api.telegram.org/bot${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}/sendMessage" \
-          -d chat_id=${{ secrets.VITE_TELEGRAM_CHAT_ID }} \
-          -d text="Deployment completed successfully!"
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
+          branch: gh-pages  # ветка, на которую будет отправляться билд
+          folder: dist      # папка с итоговыми файлами сборки
+          token: ${{ secrets.GITHUB_TOKEN }}
