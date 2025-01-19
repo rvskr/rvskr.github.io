@@ -3,7 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Запускаем деплой при пуше в main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -31,12 +32,12 @@ jobs:
 
       # Шаг 5: Сборка проекта
       - name: Build
-        run: npm run build
+        run: npm run build  # Этот шаг создает папку dist
 
       # Шаг 6: Деплой на GitHub Pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # ветка, на которую будет отправляться билд
-          folder: dist      # папка с итоговыми файлами сборки
-          token: ${{ secrets.GITHUB_TOKEN }}  # или ваш персональный токен
+          branch: gh-pages  # Ветка для деплоя
+          folder: dist      # Папка с итоговыми файлами сборки
+          token: ${{ secrets.GITHUB_TOKEN }}  # Токен для деплоя
