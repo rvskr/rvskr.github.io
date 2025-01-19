@@ -60,7 +60,7 @@ const ContactForm = ({ t, handleSubmit }) => {
     <section id="contact" className="py-20 px-4 bg-[#0d1117]">
       <div className="max-w-2xl mx-auto">
         <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
-          <Mail className="w-6 h-6" />
+          <Mail className="w-6 h-2" />
           {t.contact}
         </h3>
         <form onSubmit={handleFormSubmit} className="space-y-6">
