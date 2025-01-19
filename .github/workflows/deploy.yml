@@ -39,5 +39,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # Ветка для деплоя
-          folder: dist      # Папка с итоговыми файлами сборки
+          folder: build      # Папка с итоговыми файлами сборки
           token: ${{ secrets.GITHUB_TOKEN }}  # Токен для деплоя
