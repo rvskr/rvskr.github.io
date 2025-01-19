@@ -36,6 +36,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3  # Загружаем артефакт сборки
         with:
+          artifact_name: "vite-build"  # Указываем имя артефакта
           path: ./dist  # Папка, куда Vite кладет собранные файлы
 
   # Деплой на GitHub Pages
@@ -53,6 +54,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4  # Деплой на GitHub Pages
         with:
+          artifact_name: "vite-build"  # Указываем имя артефакта для деплоя
           token: ${{ secrets.GITHUB_TOKEN }}  # Токен для доступа к репозиторию
           
       - name: Set up GitHub Pages
