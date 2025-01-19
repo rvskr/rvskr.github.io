@@ -31,7 +31,7 @@ const ContactForm = ({ t, handleSubmit }) => {
 
       if (response.ok) {
         setIsSuccess(true);
-        setModalMessage(t.successMessage); // Текст сообщения при успехе
+        setModalMessage(t.successMessage); 
       } else {
         throw new Error('Failed to send message');
       }
