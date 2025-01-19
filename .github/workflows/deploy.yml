@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # используйте актуальную версию Node.js
+          node-version: 'v22.13.0'  # используйте актуальную версию Node.js
 
       # Шаг 3: Установка зависимостей
       - name: Install dependencies
