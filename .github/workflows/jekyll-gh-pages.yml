@@ -1,0 +1,73 @@
+name: Deploy Vite React Project to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]  # Запуск при пушах в ветку main
+  workflow_dispatch:  # Также можно запускать вручную через GitHub Actions
+
+permissions:
+  contents: read  # Чтение содержимого репозитория
+  pages: write  # Права на деплой на GitHub Pages
+  id-token: write  # Права на идентификацию
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false  # Не отменять выполняющиеся деплои
+
+jobs:
+  # Сборка проекта
+  build:
+    runs-on: ubuntu-latest  # Используется последняя версия Ubuntu
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Клонируем репозиторий
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Указываем версию Node.js
+
+      - name: Install dependencies
+        run: npm install  # Устанавливаем зависимости
+
+      - name: Build with Vite
+        run: npm run build  # Собираем проект с помощью Vite
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vite-build
+          path: ./dist  # Папка, куда Vite кладет собранные файлы
+
+  # Деплой на GitHub Pages
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest  # Используется последняя версия Ubuntu
+    needs: build  # Ожидаем завершения сборки перед деплоем
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          branch: gh-pages  # Указываем ветку для деплоя (gh-pages)
+          folder: ./dist  # Папка с собранными файлами
+          
+      - name: Set up GitHub Pages
+        uses: actions/configure-pages@v5  # Настройка GitHub Pages
+
+  # Дополнительные шаги для работы с Telegram API (опционально)
+  telegram_notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Send Telegram notification
+        run: |
+          curl -s -X POST \
+            https://api.telegram.org/bot${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ secrets.VITE_TELEGRAM_CHAT_ID }} \
+            -d text="Проект успешно развернут на GitHub Pages!"
