@@ -1,72 +1,95 @@
-// src/components/ContactForm.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Send } from 'lucide-react';
 
 const ContactForm = ({ t, handleSubmit }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  
+  // Проверяем переменные окружения при монтировании компонента
+  useEffect(() => {
+    console.log('Environment variables check on mount:');
+    console.log('VITE_TELEGRAM_BOT_TOKEN exists:', !!import.meta.env.VITE_TELEGRAM_BOT_TOKEN);
+    console.log('VITE_TELEGRAM_CHAT_ID exists:', !!import.meta.env.VITE_TELEGRAM_CHAT_ID);
+    console.log('Environment variables:', {
+      token: import.meta.env.VITE_TELEGRAM_BOT_TOKEN ? '[EXISTS]' : '[MISSING]',
+      chatId: import.meta.env.VITE_TELEGRAM_CHAT_ID ? '[EXISTS]' : '[MISSING]'
+    });
+  }, []);
 
   const sendMessageToTelegram = async (formData) => {
-    const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;  
-    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;  
-    console.log('Environment variables check:');
-    console.log('VITE_TELEGRAM_BOT_TOKEN exists:', !!token);
-    console.log('VITE_TELEGRAM_CHAT_ID exists:', !!chatId);
-    console.log('Process env:', import.meta.env); // Это покажет все доступные переменные окружения
-    
-    if (!token || !chatId) {
-      console.error('Token:', token);
-      console.error('Chat ID:', chatId);
-      console.error('Telegram bot token or chat ID is missing');
-      return;
-    }
-    
-    if (!token || !chatId) {
-      console.error('Telegram bot token or chat ID is missing');
-      return;
-    }
-
-    const url = `https://api.telegram.org/bot${token}/sendMessage`;
-    const message = `New message from ${formData.name} (${formData.email}):\n${formData.message}`;
-
     try {
+      // Получаем переменные окружения
+      const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+      const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+      // Проверяем наличие переменных окружения
+      if (!token || !chatId) {
+        console.error('Configuration error:', {
+          hasToken: !!token,
+          hasChatId: !!chatId,
+          envKeys: Object.keys(import.meta.env)
+        });
+        setModalMessage(t.errorMessage);
+        throw new Error('Telegram configuration is missing');
+      }
+
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+      const message = `New message from ${formData.name} (${formData.email}):\n${formData.message}`;
+
       const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({
           chat_id: chatId,
           text: message,
+          parse_mode: 'HTML'
         }),
       });
 
-      if (response.ok) {
-        setIsSuccess(true);
-        setModalMessage(t.successMessage); 
-      } else {
-        throw new Error('Failed to send message');
+      // Проверяем ответ от API Telegram
+      const data = await response.json();
+      
+      if (!response.ok) {
+        console.error('Telegram API error:', {
+          status: response.status,
+          statusText: response.statusText,
+          data
+        });
+        throw new Error(data.description || 'Failed to send message');
       }
+
+      setIsSuccess(true);
+      setModalMessage(t.successMessage);
     } catch (error) {
-      console.error(error);
-      setModalMessage(t.errorMessage); // Текст сообщения при ошибке
+      console.error('Send message error:', error);
+      setIsSuccess(false);
+      setModalMessage(t.errorMessage);
     }
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    
     setLoading(true);
 
-    const formData = new FormData(event.target);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const message = formData.get('message');
+    try {
+      const formData = new FormData(event.target);
+      const formValues = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message')
+      };
 
-    await sendMessageToTelegram({ name, email, message });
-
-    setLoading(false);
+      await sendMessageToTelegram(formValues);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Остальной JSX код остается без изменений
   return (
     <section id="contact" className="py-20 px-4 bg-[#0d1117]">
       <div className="max-w-2xl mx-auto">

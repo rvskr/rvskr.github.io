@@ -26,14 +26,48 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Debug env variables
+        run: |
+          echo "Checking if env variables exist:"
+          if [ -n "${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}" ]; then
+            echo "VITE_TELEGRAM_BOT_TOKEN exists and is not empty"
+            echo "First 4 characters of token: ${${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}:0:4}..."
+          else
+            echo "VITE_TELEGRAM_BOT_TOKEN is empty or not set"
+          fi
+          if [ -n "${{ secrets.VITE_TELEGRAM_CHAT_ID }}" ]; then
+            echo "VITE_TELEGRAM_CHAT_ID exists and is not empty"
+            echo "Chat ID value length: ${#${{ secrets.VITE_TELEGRAM_CHAT_ID }}}"
+          else
+            echo "VITE_TELEGRAM_CHAT_ID is empty or not set"
+          fi
+
       - name: Install dependencies
         run: npm install
+
+      - name: Create env file
+        run: |
+          touch .env
+          echo VITE_TELEGRAM_BOT_TOKEN="${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}" >> .env
+          echo VITE_TELEGRAM_CHAT_ID="${{ secrets.VITE_TELEGRAM_CHAT_ID }}" >> .env
+          echo "Content of .env file (with masked values):"
+          cat .env | sed 's/=.*$/=***/'
 
       - name: Build with Vite
         env:
           VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
           VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
-        run: npm run build
+        run: |
+          echo "Build environment check:"
+          env | grep VITE_ | sed 's/=.*$/=***/'
+          npm run build
+
+      - name: Check build output
+        run: |
+          echo "Checking build output directory:"
+          ls -la dist/
+          echo "Checking for environment variables in main chunk:"
+          grep -r "VITE_" dist/ || echo "No direct VITE_ strings found in build"
 
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
