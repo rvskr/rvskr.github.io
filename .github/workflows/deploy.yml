@@ -3,33 +3,38 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # основная ветка
+      - main  # Деплой будет запускаться при пуше в ветку main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:  # Переменные окружения для всего рабочего процесса
-      VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
-      VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
-
     steps:
+      # Проверка исходного кода из репозитория
       - name: Check out code
         uses: actions/checkout@v2
 
+      # Установка Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '22.13.0'
 
+      # Установка зависимостей
       - name: Install dependencies
         run: npm install
 
+      # Сборка проекта
       - name: Build project
         run: npm run build
 
+      # Деплой на GitHub Pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: dist
+          branch: gh-pages  # Деплой будет происходить в ветку gh-pages
+          folder: dist      # Папка с результатами сборки
+
+        env:
+          VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}  # Указание токена бота
+          VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}      # Указание chat ID
