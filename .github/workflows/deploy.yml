@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '22.13.0'
 
       - name: Install dependencies
         run: npm install
@@ -31,3 +31,5 @@ jobs:
           folder: dist      # Папка с собранными файлами (для Vite это dist)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Встроенный токен для доступа к репозиторию
+          VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}  # Ваш токен для бота Telegram
+          VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}  # ID чата Telegram, куда будут отправляться уведомления
