@@ -10,6 +10,17 @@ const ContactForm = ({ t, handleSubmit }) => {
   const sendMessageToTelegram = async (formData) => {
     const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;  
     const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;  
+    console.log('Environment variables check:');
+    console.log('VITE_TELEGRAM_BOT_TOKEN exists:', !!token);
+    console.log('VITE_TELEGRAM_CHAT_ID exists:', !!chatId);
+    console.log('Process env:', import.meta.env); // Это покажет все доступные переменные окружения
+    
+    if (!token || !chatId) {
+      console.error('Token:', token);
+      console.error('Chat ID:', chatId);
+      console.error('Telegram bot token or chat ID is missing');
+      return;
+    }
     
     if (!token || !chatId) {
       console.error('Telegram bot token or chat ID is missing');
