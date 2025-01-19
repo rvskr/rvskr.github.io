@@ -1,7 +1,6 @@
 import React from 'react';
 import { Github, Mail, Phone, MessageCircle, DiscIcon as BrandDiscord } from 'lucide-react';
 
-
 interface FooterProps {
   t: any;
   programmingLanguages: { name: string; percentage: number; color: string }[];
@@ -24,15 +23,11 @@ const Footer: React.FC<FooterProps> = ({ t, programmingLanguages }) => {
                 <MessageCircle className="w-5 h-5" />
                 Telegram
               </a>
-              <a
-                href="https://discord.com/users/yourid"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              >
+              {/* Ссылка на Discord временно недоступна */}
+              <span className="flex items-center gap-2 text-gray-400 cursor-not-allowed">
                 <BrandDiscord className="w-5 h-5" />
-                Discord
-              </a>
+                Discord (временно недоступно)
+              </span>
               <a
                 href="https://github.com/rvskr"
                 target="_blank"
@@ -61,7 +56,7 @@ const Footer: React.FC<FooterProps> = ({ t, programmingLanguages }) => {
           <div>
             <h4 className="text-xl font-semibold mb-4">{t.codeStats}</h4>
             <div className="space-y-2">
-                         
+              {/* Здесь можно отобразить статистику по коду */}
             </div>
           </div>
         </div>
