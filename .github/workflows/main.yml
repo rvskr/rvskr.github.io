@@ -1,16 +1,16 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Запускаем деплой при пуше в main
+      - main  # Деплой при пуше в main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # Шаг 1: Проверка репозитория
+      # Шаг 1: Checkout репозитория
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 'v22.13.0'  # используйте актуальную версию Node.js
+          node-version: 'v22.13.0'  # актуальная версия Node.js
 
       # Шаг 3: Установка зависимостей
       - name: Install dependencies
@@ -38,9 +38,9 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # Целевая ветка для деплоя
-          folder: dist      # Папка, которая будет задеплоена (по умолчанию у Vite это dist)
-          
+          branch: gh-pages  # деплой в ветку gh-pages
+          folder: dist      # папка для деплоя (по умолчанию dist для Vite)
+
       # Шаг 7: Очистка .env
       - name: Clean up .env file
         run: rm .env
