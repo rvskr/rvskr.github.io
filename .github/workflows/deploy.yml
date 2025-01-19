@@ -27,6 +27,11 @@ jobs:
         with:
           node-version: '18'  # Указываем версию Node.js
 
+      - name: Set environment variables
+        run: |
+          echo "VITE_TELEGRAM_BOT_TOKEN=${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}" >> $GITHUB_ENV
+          echo "VITE_TELEGRAM_CHAT_ID=${{ secrets.VITE_TELEGRAM_CHAT_ID }}" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: npm install  # Устанавливаем зависимости
 
@@ -36,7 +41,6 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3  # Загружаем артефакт сборки
         with:
-          artifact_name: "vite-build"  # Указываем имя артефакта
           path: ./dist  # Папка, куда Vite кладет собранные файлы
 
   # Деплой на GitHub Pages
@@ -54,8 +58,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4  # Деплой на GitHub Pages
         with:
-          artifact_name: "vite-build"  # Указываем имя артефакта для деплоя
           token: ${{ secrets.GITHUB_TOKEN }}  # Токен для доступа к репозиторию
-          
+
       - name: Set up GitHub Pages
         uses: actions/configure-pages@v5  # Настройка GitHub Pages
