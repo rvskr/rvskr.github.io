@@ -3,41 +3,30 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Запускаем деплой при пуше в main
+      - main # или master, если ваша основная ветка называется master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Шаг 1: Проверка репозитория
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      # Шаг 2: Настройка Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'v22.13.0'  # используйте актуальную версию Node.js
+    - name: Set up Node.js (если у вас проект на Node.js)
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # Укажите версию Node.js, которая вам нужна
 
-      # Шаг 3: Установка зависимостей
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install  # или другой менеджер зависимостей, например yarn
 
-      # Шаг 4: Создание файла .env
-      - name: Create .env file
-        run: |
-          echo "VITE_TELEGRAM_BOT_TOKEN=${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}" >> .env
-          echo "VITE_TELEGRAM_CHAT_ID=${{ secrets.VITE_TELEGRAM_CHAT_ID }}" >> .env
+    - name: Build project
+      run: npm run build # измените на ваш соответствующий командный скрипт для сборки
 
-      # Шаг 5: Сборка проекта
-      - name: Build
-        run: npm run build  # Этот шаг создает папку dist
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # Автоматически доступен в GitHub Actions
+        publish_dir: ./dist  # Укажите путь к директории с вашим собранным проектом (например, dist, build)
 
-      # Шаг 6: Деплой на GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages  # Ветка для деплоя
-          folder: dist      # Папка с итоговыми файлами сборки
-          token: ${{ secrets.GITHUB_TOKEN }}  # Токен для деплоя
