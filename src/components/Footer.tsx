@@ -16,7 +16,7 @@ const Footer: React.FC<FooterProps> = ({ t, programmingLanguages }) => {
             <h4 className="text-xl font-semibold mb-4">{t.contactMe}</h4>
             <div className="space-y-4">
               <a
-                href="https://t.me/rvskr"
+                href="https://t.me/r_vskr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
